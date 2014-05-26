@@ -1,7 +1,8 @@
 {
-	"dependencies": {
-		"express": "4.x",
-		"jade": "1.x",
-		"body-parser": "1.x"
-	}
+  "dependencies": {
+    "body-parser": "1.x",
+    "express": "4.x",
+    "grunt-cli": "^0.1.13",
+    "jade": "1.x"
+  }
 }
