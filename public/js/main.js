@@ -1,3 +1,47 @@
+// This is a RegEX that will remove http or https from str.
+// This doesn't change the str, so will need to assign to new var
+$(document).on('ready',function(){
+  // var url = $('#input-url').val();
+  // console.log(url.length);
+  $('#main-form').on('submit',function(){
+    // parsing the input url (removing the http stuff)
+    var userInputURL = $('#input-url').val().replace(/http[s]?:\/\//,'');
+    // turning string into an array split on /
+    URLtoArr = userInputURL.split('/');
+    console.log(URLtoArr);
+    // ajax request, sending username and reponame
+    $.get('/repo-tree', {
+      userName: URLtoArr[1],
+      repoName: URLtoArr[2] 
+    }, function(responseData){
+      // 
+      // console.log('response has come back!', responseData);
+    })
+    return false;
+  });
+});
+
+var testinputurl = 'https://github.com/AndyLampert/repository-file-tree-generator/'.replace(/http[s]?:\/\//,'').split('/');
+// testinputurl[1] => AndyLampert
+// testinputurl[2] => repository-file-tree-generator
+
+// NEXT STEP - make new function
+// that takes the input object that is in the github format and returns an object in the flare.json format
+
+var outputObj = {};
+var transform = function(inputObj){
+  outputObj.name = testinputurl[1];
+  outputObj.children = testinputurl[2];
+  return outputObj;
+}
+
+console.log(outputObj);
+
+// start slow - step 1
+// generate a name property and a children property
+// and return an object with those two props
+
+// D3 CODE
 var m = [20, 120, 20, 120],
     w = 1280 - m[1] - m[3],
     h = 800 - m[0] - m[2],
@@ -10,7 +54,7 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var vis = d3.select("#body").append("svg:svg")
+var vis = d3.select("#d3-container").append("svg:svg")
     .attr("width", w + m[1] + m[3])
     .attr("height", h + m[0] + m[2])
   .append("svg:g")

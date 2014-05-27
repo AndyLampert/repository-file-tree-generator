@@ -5,21 +5,11 @@ var request = require('request');
 
 // calls the github API to find out the number of stars and forks for the request repository. This requires a custom User-Agent header as well as https.
 var options = {
-    url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator',
-    // custom 
+    url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
     headers: {
         'User-Agent': 'request'
     }
 };
-
-function callback(error, response, body) {
-    if (!error && response.statusCode == 200) {
-        var info = JSON.parse(body);
-        console.log(info.stargazers_count + " Stars");
-        console.log(info.forks_count + " Forks");
-        console.log("Repo name: ", info.name);
-    }
-}
 
 var app = express();
 app.set('view engine', 'jade');
@@ -27,9 +17,23 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
 
+// api route handler
+app.get('/repo-tree', function(req, res){
+	// request module to make http request to github
+	request(options, callback);
+	// function callback that handles response from github and sends data back to the client
+	function callback(error, response, body) {
+	    if (!error && response.statusCode == 200) {
+	        var info = JSON.parse(body);
+	        console.log(info.tree[0].type);
+	        console.log(info);
+	        res.send(info);
+	    }
+	}
+})
+
 app.get('/', function(req, res) {
 	// when homepage is requested, run the request
-	request(options, callback);
 	res.render('index');
 });
 
