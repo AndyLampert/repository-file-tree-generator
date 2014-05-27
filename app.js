@@ -11,10 +11,16 @@ app.use(bodyParser());
 
 // api route handler
 app.get('/repo-tree', function(req, res){
-	// calls the github API to find out the number of stars and forks for the request repository. This requires a custom User-Agent header as well as https.
 	var options = {
 		// will need to convert the url that the user input into the api format
+		// 
+		// req.query.userName -> to get the values
+		// req.query.repoName
+		// 
+		// GOAL: construct the url below from req.query.userName/repoName
+		// just use str concat (var + var + ... etc)
 	    url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
+	    // github api requires custom header
 	    headers: {
 	        'User-Agent': 'request'
 	    }
@@ -26,8 +32,8 @@ app.get('/repo-tree', function(req, res){
 	function callback(error, response, body) {
 	    if (!error && response.statusCode == 200) {
 	        var info = JSON.parse(body);
-	        console.log(info.tree[0].type);
-	        console.log(info);
+	        // console.log(info.tree[0].type);
+	        // console.log(info);
 	        res.send(info);
 	    }
 	}

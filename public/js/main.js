@@ -15,9 +15,11 @@ $(document).on('ready',function(){
       repoName: URLtoArr[2] 
     }, function(repoTree){
       // console.log('response has come back!', repoTree);
-      console.log("repoTree through the transform()", transform(repoTree) );
+      // console.log("repoTree through the transform()", transform(repoTree) );
       // After submit, after ajax response, run the update function (after running transform function on repoTree, the response data from gh)
-      update(transform(repoTree));
+      var d3object = transform(repoTree);
+      // our github data comes back and we pass our d3object for source and oldsource
+      update(d3object, d3object);
     })
     return false;
   });
@@ -33,6 +35,9 @@ var removeHTTP = function(str){
 // repoTree => the json response from github 
 // completely generic function that will transform github data to d3 data
 var transform = function(repoTree){ 
+
+
+
   var urlarray = removeHTTP(repoTree.url).split('/');
   // urlarr[3] => repo name
   var repoName = urlarray[3];
@@ -42,7 +47,25 @@ var transform = function(repoTree){
   // creates name prop and assigns its value to something
   d3formattedObj.name = repoName;
   // creates children prop and assign its value an empty array
-  d3formattedObj.children = [];
+  d3formattedObj.children = []; // push into this
+
+  // in trans function, loop over the tree, 
+  // for each path create obj literal with a single key/value pair (name: currentItem.path)
+  // current item I’m looping over
+  // Then push that onto an array of children (into d3formattedObj)
+    for (var i = 0; i < repoTree.tree.length; i++) {
+      // var newObj = repoTree[i].path
+      var pathName = repoTree.tree[i].path;
+      var childArr = [];
+      var childArrEntry = {};
+      childArrEntry.name = pathName;
+      d3formattedObj.children.push(childArrEntry);
+      console.log('pathName is :', pathName);
+      console.log('d3formattedObj is :', d3formattedObj);
+      console.log('childArrEntry is: ', childArrEntry);
+      console.log('childArr is: ', childArr);
+    };
+
   // returns object ready for d3 rendering
   d3formattedObj.x0 = h / 2;
   d3formattedObj.y0 = 0;
@@ -82,23 +105,17 @@ d3.json("/json/flare.json", function(json) {
       toggle(d);
     }
   }
-
-  // Initialize the display to show a few nodes.
-  // root.children.forEach(toggleAll);
-  // toggle(root.children[1]);
-  // toggle(root.children[1].children[2]);
-  // toggle(root.children[1]);
-  // toggle(root.children[9]);
-  // toggle(root.children[9].children[0]);
-
-  update(root);
+  // 
+  update(root, root);
 });
 
-function update(source) {
+// adding oldScouce because it is relying on root which is global
+// oldSource is root moved to an argument
+function update(source, oldSource) {
   var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
   // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse();
+  var nodes = tree.nodes(oldSource).reverse();
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
@@ -111,12 +128,19 @@ function update(source) {
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-      .on("click", function(d) { toggle(d); update(d); });
+      // set up click handler to call the same function
+      .on("click", function(d) 
+        { 
+          // on click, toggle all the children (vis/hide) AND re-render entire tree
+          toggle(d); 
+          update(d, oldSource); 
+        });
 
   nodeEnter.append("svg:circle")
       .attr("r", 1e-6)
       .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
+  // handles update method
   nodeEnter.append("svg:text")
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
@@ -184,7 +208,9 @@ function update(source) {
   });
 }
 
-// Toggle children.
+// hide or shows all children of a node
+// d_children -> hidden nodes
+// d.children -> visible nodes
 function toggle(d) {
   if (d.children) {
     d._children = d.children;
