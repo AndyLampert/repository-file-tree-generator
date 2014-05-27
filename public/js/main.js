@@ -1,49 +1,58 @@
-// This is a RegEX that will remove http or https from str.
 // This doesn't change the str, so will need to assign to new var
 $(document).on('ready',function(){
   // var url = $('#input-url').val();
   // console.log(url.length);
   $('#main-form').on('submit',function(){
     // parsing the input url (removing the http stuff)
-    var userInputURL = $('#input-url').val().replace(/http[s]?:\/\//,'');
+    var userInputURL = $('#input-url').val();
+    var updatedUserInputUrl = removeHTTP(userInputURL);
     // turning string into an array split on /
     URLtoArr = userInputURL.split('/');
-    console.log(URLtoArr);
+    // console.log(URLtoArr);
     // ajax request, sending username and reponame
     $.get('/repo-tree', {
       userName: URLtoArr[1],
       repoName: URLtoArr[2] 
-    }, function(responseData){
-      // 
-      // console.log('response has come back!', responseData);
+    }, function(repoTree){
+      // console.log('response has come back!', repoTree);
+      console.log("repoTree through the transform()", transform(repoTree) );
+      // After submit, after ajax response, run the update function (after running transform function on repoTree, the response data from gh)
+      update(transform(repoTree));
     })
     return false;
   });
 });
 
-var testinputurl = 'https://github.com/AndyLampert/repository-file-tree-generator/'.replace(/http[s]?:\/\//,'').split('/');
-// testinputurl[1] => AndyLampert
-// testinputurl[2] => repository-file-tree-generator
-
-// NEXT STEP - make new function
-// that takes the input object that is in the github format and returns an object in the flare.json format
-
-var outputObj = {};
-var transform = function(inputObj){
-  outputObj.name = testinputurl[1];
-  outputObj.children = testinputurl[2];
-  return outputObj;
+// defining function to remove the http junk from the api response data url
+var removeHTTP = function(str){
+  // This is a RegEX that will remove http or https from str.
+  return str.replace(/http[s]?:\/\//,'');
 }
 
-console.log(outputObj);
+// not a url, just changing data from github to usable json
+// repoTree => the json response from github 
+// completely generic function that will transform github data to d3 data
+var transform = function(repoTree){ 
+  var urlarray = removeHTTP(repoTree.url).split('/');
+  // urlarr[3] => repo name
+  var repoName = urlarray[3];
 
-// start slow - step 1
-// generate a name property and a children property
-// and return an object with those two props
+  // creates empty final object (that will eventually be in the d3 format)
+  var d3formattedObj = {};
+  // creates name prop and assigns its value to something
+  d3formattedObj.name = repoName;
+  // creates children prop and assign its value an empty array
+  d3formattedObj.children = [];
+  // returns object ready for d3 rendering
+  d3formattedObj.x0 = h / 2;
+  d3formattedObj.y0 = 0;
+  return d3formattedObj;
+}
 
 // D3 CODE
 var m = [20, 120, 20, 120],
     w = 1280 - m[1] - m[3],
+    // height
     h = 800 - m[0] - m[2],
     i = 0,
     root;
@@ -61,7 +70,9 @@ var vis = d3.select("#d3-container").append("svg:svg")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
 d3.json("/json/flare.json", function(json) {
+  // root => flare.json converted into JS object  
   root = json;
+  // adds new propery!
   root.x0 = h / 2;
   root.y0 = 0;
 

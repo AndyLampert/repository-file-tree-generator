@@ -3,14 +3,6 @@ var bodyParser = require('body-parser');
 // request boilerplate code
 var request = require('request');
 
-// calls the github API to find out the number of stars and forks for the request repository. This requires a custom User-Agent header as well as https.
-var options = {
-    url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
-    headers: {
-        'User-Agent': 'request'
-    }
-};
-
 var app = express();
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
@@ -19,6 +11,15 @@ app.use(bodyParser());
 
 // api route handler
 app.get('/repo-tree', function(req, res){
+	// calls the github API to find out the number of stars and forks for the request repository. This requires a custom User-Agent header as well as https.
+	var options = {
+		// will need to convert the url that the user input into the api format
+	    url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
+	    headers: {
+	        'User-Agent': 'request'
+	    }
+	};
+
 	// request module to make http request to github
 	request(options, callback);
 	// function callback that handles response from github and sends data back to the client
