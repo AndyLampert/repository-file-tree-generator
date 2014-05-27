@@ -7,7 +7,7 @@ $(document).on('ready',function(){
     var userInputURL = $('#input-url').val();
     var updatedUserInputUrl = removeHTTP(userInputURL);
     // turning string into an array split on /
-    URLtoArr = userInputURL.split('/');
+    URLtoArr = updatedUserInputUrl.split('/');
     // console.log(URLtoArr);
     // ajax request, sending username and reponame
     $.get('/repo-tree', {
@@ -76,7 +76,7 @@ var transform = function(repoTree){
 var m = [20, 120, 20, 120],
     w = 1280 - m[1] - m[3],
     // height
-    h = 800 - m[0] - m[2],
+    h = 1000 - m[0] - m[2],
     i = 0,
     root;
 

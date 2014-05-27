@@ -11,6 +11,7 @@ app.use(bodyParser());
 
 // api route handler
 app.get('/repo-tree', function(req, res){
+	// console.log(req.query.userName);
 	var options = {
 		// will need to convert the url that the user input into the api format
 		// 
@@ -19,12 +20,15 @@ app.get('/repo-tree', function(req, res){
 		// 
 		// GOAL: construct the url below from req.query.userName/repoName
 		// just use str concat (var + var + ... etc)
-	    url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
+		url: 'https://api.github.com/repos/' +  req.query.userName + '/' + req.query.repoName + '/git/trees/HEAD?recursive=1',
+	    // url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
 	    // github api requires custom header
 	    headers: {
 	        'User-Agent': 'request'
 	    }
 	};
+	console.log('req.query.userName', req.query.userName);
+	console.log('req.query.userName', req.query.repoName);
 
 	// request module to make http request to github
 	request(options, callback);
@@ -34,8 +38,13 @@ app.get('/repo-tree', function(req, res){
 	        var info = JSON.parse(body);
 	        // console.log(info.tree[0].type);
 	        // console.log(info);
+			console.log(req.query.userName);
 	        res.send(info);
-	    }
+	    } else {
+	    	console.log("error: ", error);
+	    	console.log('status code: ', response.statusCode);
+	    	res.send(500)
+	    } 
 	}
 })
 
