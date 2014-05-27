@@ -9,7 +9,7 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
 
-// api route handler
+// api route handler!
 app.get('/repo-tree', function(req, res){
 	// console.log(req.query.userName);
 	var options = {
