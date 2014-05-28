@@ -9,26 +9,18 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
 
-// api route handler!
+// api route handler
 app.get('/repo-tree', function(req, res){
-	// console.log(req.query.userName);
 	var options = {
-		// will need to convert the url that the user input into the api format
-		// 
-		// req.query.userName -> to get the values
-		// req.query.repoName
-		// 
-		// GOAL: construct the url below from req.query.userName/repoName
-		// just use str concat (var + var + ... etc)
+		// Construct new api url from req.query.userName/repoName
 		url: 'https://api.github.com/repos/' +  req.query.userName + '/' + req.query.repoName + '/git/trees/HEAD?recursive=1',
-	    // url: 'https://api.github.com/repos/andylampert/repository-file-tree-generator/git/trees/HEAD?recursive=1',
 	    // github api requires custom header
 	    headers: {
 	        'User-Agent': 'request'
 	    }
 	};
-	console.log('req.query.userName', req.query.userName);
-	console.log('req.query.userName', req.query.repoName);
+	// console.log('req.query.userName', req.query.userName);
+	// console.log('req.query.userName', req.query.repoName);
 
 	// request module to make http request to github
 	request(options, callback);

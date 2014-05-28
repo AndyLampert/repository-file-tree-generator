@@ -1,0 +1,34 @@
+{
+	"name": "repo-name",
+	"children": [
+		{
+			"name": "public",
+			"children": [
+				{
+					"name": "css",
+					"children": [
+						{ 
+							"name": "main.css" 
+						}
+					]
+				},
+				{
+					"name": "js",
+					"children": [
+						{ 
+							"name": "main.js"
+						},
+						{ 
+							"name": "vendor",
+							"children": [
+								{ 
+									"name": "d3.layout.js"  
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

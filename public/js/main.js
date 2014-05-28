@@ -1,17 +1,17 @@
-// This doesn't change the str, so will need to assign to new var
 $(document).on('ready',function(){
-  // var url = $('#input-url').val();
-  // console.log(url.length);
+  // on submit of the repo url input field... 
   $('#main-form').on('submit',function(){
     // parsing the input url (removing the http stuff)
     var userInputURL = $('#input-url').val();
+    // run the removeHTTP function (removing http junk) on the user input 
     var updatedUserInputUrl = removeHTTP(userInputURL);
-    // turning string into an array split on /
+    // turning user input into an array split on /
     URLtoArr = updatedUserInputUrl.split('/');
-    // console.log(URLtoArr);
     // ajax request, sending username and reponame
     $.get('/repo-tree', {
+      // second value => github user name
       userName: URLtoArr[1],
+      // third value => github repo name 
       repoName: URLtoArr[2] 
     }, function(repoTree){
       // console.log('response has come back!', repoTree);
@@ -21,6 +21,7 @@ $(document).on('ready',function(){
       // our github data comes back and we pass our d3object for source and oldsource
       update(d3object, d3object);
     })
+    // stops the page from reloading
     return false;
   });
 });
@@ -35,30 +36,25 @@ var removeHTTP = function(str){
 // repoTree => the json response from github 
 // completely generic function that will transform github data to d3 data
 var transform = function(repoTree){ 
-
-
-
   var urlarray = removeHTTP(repoTree.url).split('/');
   // urlarr[3] => repo name
   var repoName = urlarray[3];
-
   // creates empty final object (that will eventually be in the d3 format)
   var d3formattedObj = {};
   // creates name prop and assigns its value to something
   d3formattedObj.name = repoName;
   // creates children prop and assign its value an empty array
   d3formattedObj.children = []; // push into this
-
-  // in trans function, loop over the tree, 
-  // for each path create obj literal with a single key/value pair (name: currentItem.path)
-  // current item I’m looping over
-  // Then push that onto an array of children (into d3formattedObj)
+  
+  // Loop over the tree (head object of response data)
     for (var i = 0; i < repoTree.tree.length; i++) {
-      // var newObj = repoTree[i].path
+      // assign the current tree's path value to pathName
       var pathName = repoTree.tree[i].path;
       var childArr = [];
       var childArrEntry = {};
+      // creating new {"name": pathName} object
       childArrEntry.name = pathName;
+      // pushing the newly created object into the d3 object
       d3formattedObj.children.push(childArrEntry);
       console.log('pathName is :', pathName);
       console.log('d3formattedObj is :', d3formattedObj);
@@ -92,7 +88,7 @@ var vis = d3.select("#d3-container").append("svg:svg")
   .append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-d3.json("/json/flare.json", function(json) {
+d3.json("/json/test.json", function(json) {
   // root => flare.json converted into JS object  
   root = json;
   // adds new propery!
