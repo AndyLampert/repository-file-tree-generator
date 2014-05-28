@@ -8,19 +8,54 @@ $(document).on('ready',function(){
     // turning user input into an array split on /
     URLtoArr = updatedUserInputUrl.split('/');
     // ajax request, sending username and reponame
+    
+
+    http://localhost:3000/repo-name?userName=AndyLampert&repoName=repository-file-tree-generator
+
+    $.ajax({
+      url: '/repo-tree', 
+      data: {
+        // second value => github user name
+        userName: URLtoArr[1],
+        // third value => github repo name 
+        repoName: URLtoArr[2] 
+      },
+      type: 'GET',
+      success: function(repoTree){
+        // console.log('response has come back!', repoTree);
+        // console.log("repoTree through the transform()", transform(repoTree) );
+        // After submit, after ajax response, run the update function (after running transform function on repoTree, the response data from gh)
+        var d3object = transform(repoTree);
+        // our github data comes back and we pass our d3object for source and oldsource
+        update(d3object, d3object);
+        console.log('asdf');
+      },
+      error: function(response){
+        alert('error on the client side');
+        // gives all arguments passed to a function
+        console.log(arguments);
+        $('#error-container').append(response.responseText);
+      }
+    });
+    
+    /*
     $.get('/repo-tree', {
       // second value => github user name
       userName: URLtoArr[1],
       // third value => github repo name 
       repoName: URLtoArr[2] 
     }, function(repoTree){
+      console.log();
       // console.log('response has come back!', repoTree);
       // console.log("repoTree through the transform()", transform(repoTree) );
       // After submit, after ajax response, run the update function (after running transform function on repoTree, the response data from gh)
       var d3object = transform(repoTree);
       // our github data comes back and we pass our d3object for source and oldsource
       update(d3object, d3object);
+      console.log('asdf')
     })
+    */
+
     // stops the page from reloading
     return false;
   });
@@ -45,7 +80,7 @@ var transform = function(repoTree){
   d3formattedObj.name = repoName;
   // creates children prop and assign its value an empty array
   d3formattedObj.children = []; // push into this
-  
+
   // Loop over the tree (head object of response data)
     for (var i = 0; i < repoTree.tree.length; i++) {
       // assign the current tree's path value to pathName

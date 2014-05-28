@@ -7,7 +7,7 @@
 				{
 					"name": "css",
 					"children": [
-						{ 
+						{
 							"name": "main.css" 
 						}
 					]
