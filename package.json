@@ -4,6 +4,6 @@
     "express": "4.x",
     "grunt-cli": "^0.1.13",
     "jade": "1.x",
-    "request": "^2.36.0",
+    "request": "^2.36.0"
   }
 }
