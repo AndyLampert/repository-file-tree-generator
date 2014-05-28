@@ -53,6 +53,6 @@ app.get('/', function(req, res) {
 	res.render('index');
 });
 
-var server = app.listen(3000, function() {
+var server = app.listen(process.env.PORT || 3000, function() {
 	console.log('Express server listening on port ' + server.address().port);
 });
