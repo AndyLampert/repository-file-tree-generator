@@ -9,6 +9,10 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
 
+var getGitURL = function(){
+	//
+}
+
 // api route handler
 app.get('/repo-tree', function(req, res){
 
@@ -44,21 +48,59 @@ app.get('/repo-tree', function(req, res){
 	// function callback that handles response from github and sends data back to the client
 	function callback(error, response, body) {
 	    if (!error && response.statusCode == 200) {
+	    	// info is the big object with the tree array that I get back from GH
 	    	// parse takes json string and converts it into an info object
 	        var info = JSON.parse(body);
+	        var rootObj = {  
+	        	name: "test",
+	        	children: []
+	         };
 
-	        // here I need to convert the response json object (info) from github into a json format that I can use
-	        
-	        // loop through array that comes back (info.tree) <-- the array
-	        for (var i = 0; i < info.tree.length; i++) {
-	        	// prints the type (blob or tree) and the path in an array
-	        	// public/js/vendor/d3.layout.js => ['public', 'js', 'vendor', 'd3.layout.js']
-	        	console.log(info.tree[i].type, info.tree[i].path.split('/'));
+	        function ifNodeExists(arr, checkName) {
+	        	// loop through arr to see if it has a name in it that matches the param name. If it matches, use that one, if it doesn't, create a new one.
+	        	// arr => pass the children array
+	        	// name => what I'm looking for
+	        	// should return true is the name prop is already in given arr
+	        	for (var i = 0; i < arr.length; i++) {
+	        		// console.log("if node exists: ", i, arr[i]);
+	        		if(arr[i].name === checkName) {
+	        			// if it's (checkName) found, meaning the node already exists, so return true
+	        			return true;
+	        		}
+	        	};
+	        	// if no nodes are found (matching nodes), then node does not exist, so return false
+	        	return false;
+	        }
 
+	        for(var i = 0; i < info.tree.length; i++){
+	        	// console.log(info.tree[i].path);
+	        	// create keys on rootObj dynamically
+	        	var marker = rootObj;
+	        	var rawPath = info.tree[i].path.split('/');
+	        	for (var j = 0; j < rawPath.length; j++) {
+	        		// console.log(rawPath[j]);
+
+	        		var nodeExists = ifNodeExists(marker.children, rawPath[j]);
+
+	        		console.log(marker.name);
+	        		// console.log("rawPath[j] -->", rawPath[j], "nodeExists--_>", nodeExists);
+	        		// if the node does not exist, then create the new node and push it to children
+	        		if(!nodeExists){
+		        		var node = {
+		        			name: rawPath[j],
+				        	children: []
+				        }
+				        // if(rootObj.name.length < 1) {
+				        // don't make another one?
+				        marker.children.push(node);
+				        // update the marker
+				        marker = node;
+	        		}
+	        	};
 	        };
+	        console.log(rootObj);
 
-			// console.log(req.query.userName);
-	        res.send(info);
+	        res.send(rootObj);
 	    } else {
 	    	console.log(options.url);
 	    	console.log("error: ", error);

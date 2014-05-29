@@ -1,4 +1,33 @@
+// // test  variable for findNode function
+// var d3obj = { "name": "a" },
+//        { "children": [
+//           { "name": "b1" },
+//           { "name": "b2" }
+//        ]}
+
 $(document).on('ready',function(){
+
+  // create a findNode function
+  // function findNode (d3obj, path) {
+  //   // this will go through a path and look for the path input's value? 
+  //     // for example:
+  //     // (d3obj, 'a/b')
+  //     // should return:
+  //     // { "name": "b "}
+      
+  //     // change path into an array
+  //     for (var i = 0; i < path.length; i++) {
+  //       var pathToArr = path.split('/');
+  //       var newObj = {};
+  //       var newArr = [];
+
+  //       newArr.push(path[i]);
+  //       console.log(newArr);
+  //     };
+  // }
+
+  // findNode(d3obj, 'a/b1'); 
+
   // on submit of the repo url input field... 
   $('#main-form').on('submit',function(){
     // parsing the input url (removing the http stuff)
@@ -8,9 +37,6 @@ $(document).on('ready',function(){
     // turning user input into an array split on /
     URLtoArr = updatedUserInputUrl.split('/');
     // ajax request, sending username and reponame
-    
-
-    http://localhost:3000/repo-name?userName=AndyLampert&repoName=repository-file-tree-generator
 
     $.ajax({
       url: '/repo-tree', 
@@ -31,7 +57,7 @@ $(document).on('ready',function(){
         console.log('asdf');
       },
       error: function(response){
-        alert('error on the client side');
+        // alert('error on the client side');
         // gives all arguments passed to a function
         console.log(arguments);
         $('#error-container').append(response.responseText);
@@ -95,6 +121,17 @@ var transform = function(repoTree){
       console.log('d3formattedObj is :', d3formattedObj);
       console.log('childArrEntry is: ', childArrEntry);
       console.log('childArr is: ', childArr);
+
+      // condition that checks the type
+      // if blob - keep current functionality (create no new child nodes)
+      // if tree - it needs a "children": []
+      // 
+      // go from top to bottom, first time I see a tree, create that node (of the path name)
+      // when we see another 
+
+      // repoTree - the full obj from the server that it got from GH
+      // 
+
     };
 
   // returns object ready for d3 rendering
@@ -123,6 +160,7 @@ var vis = d3.select("#d3-container").append("svg:svg")
   .append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
+// this is the graph that gets rendered on page load (currently using this just to test - when finished, safe to remove this function)
 d3.json("/json/test.json", function(json) {
   // root => flare.json converted into JS object  
   root = json;
@@ -136,7 +174,7 @@ d3.json("/json/test.json", function(json) {
       toggle(d);
     }
   }
-  // 
+  // updates the graph on page load
   update(root, root);
 });
 
