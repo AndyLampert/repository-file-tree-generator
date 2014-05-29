@@ -4,6 +4,10 @@
 //           { "name": "b1" },
 //           { "name": "b2" }
 //        ]}
+// 
+var URLtoArr;
+var data; 
+var d3formattedObj;
 
 $(document).on('ready',function(){
 
@@ -214,14 +218,36 @@ function update(source, oldSource) {
       .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
   // handles update method
-  nodeEnter.append("svg:text")
+  nodeEnter.append("svg:a")
+      // change d.name to something that makes a url to the respective github page
+
+      .attr("xlink:href", function(d) { 
+        // console.log(d.data);
+        console.log('d3formattedObj -->', d3formattedObj);
+        console.log('data -->', data);
+        console.log("URLtoArr --->",URLtoArr);
+        console.log('d.name -->', d.name);
+        // d.data.path "" + d.name
+        return "https://" + URLtoArr[0] + "/" + URLtoArr[1] + "/" + URLtoArr[2] + "/" + "tree/master" + "/" + d.name; 
+        // https://github.com/AndyLampert/repository-file-tree-generator/blob/master/public/css/main.css
+      })
+
+      .append("svg:text").text(function(d) { return d.name; })
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-      .html(function(d) { 
-        return "<a href='www.google.com'>" + d.name + "</a>"; 
-      })
       .style("fill-opacity", 1e-6);
+
+  // code that works! (backup)
+  // nodeEnter.append("svg:text")
+  //     .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+  //     .attr("dy", ".35em")
+  //     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+  //     .html(function(d) { 
+  //       return "<a href='www.google.com'>" + d.name + "</a>"; 
+  //     })
+  //     .style("fill-opacity", 1e-6);
+
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()

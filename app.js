@@ -108,8 +108,9 @@ app.get('/repo-tree', function(req, res){
 	        		// if the node does not exist, then create the new node and push it to children
 	        		if(!nodeExists){ // same as if(nodeExists === null/false)
 		        		var node = {
-		        			name: rawPath[j]
-				        	// children: []
+		        			name: rawPath[j],
+		        			// adding another prop to send back entire object from github to the client
+		        			data: info.tree[i]
 				        }
 				        console.log("node", node);
 				        // if(rootObj.name.length < 1) {
