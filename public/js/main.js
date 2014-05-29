@@ -51,10 +51,12 @@ $(document).on('ready',function(){
         // console.log('response has come back!', repoTree);
         // console.log("repoTree through the transform()", transform(repoTree) );
         // After submit, after ajax response, run the update function (after running transform function on repoTree, the response data from gh)
-        var d3object = transform(repoTree);
+        
+        // var d3object = transform(repoTree);
+        var d3object = repoTree;
+
         // our github data comes back and we pass our d3object for source and oldsource
         update(d3object, d3object);
-        console.log('asdf');
       },
       error: function(response){
         // alert('error on the client side');
@@ -144,7 +146,7 @@ var transform = function(repoTree){
 var m = [20, 120, 20, 120],
     w = 1280 - m[1] - m[3],
     // height
-    h = 1000 - m[0] - m[2],
+    h = 2000 - m[0] - m[2],
     i = 0,
     root;
 
@@ -161,22 +163,22 @@ var vis = d3.select("#d3-container").append("svg:svg")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
 // this is the graph that gets rendered on page load (currently using this just to test - when finished, safe to remove this function)
-d3.json("/json/test.json", function(json) {
-  // root => flare.json converted into JS object  
-  root = json;
-  // adds new propery!
-  root.x0 = h / 2;
-  root.y0 = 0;
+// d3.json("/json/test.json", function(json) {
+//   // root => flare.json converted into JS object  
+//   root = json;
+//   // adds new propery!
+//   root.x0 = h / 2;
+//   root.y0 = 0;
 
-  function toggleAll(d) {
-    if (d.children) {
-      d.children.forEach(toggleAll);
-      toggle(d);
-    }
-  }
-  // updates the graph on page load
-  update(root, root);
-});
+//   function toggleAll(d) {
+//     if (d.children) {
+//       d.children.forEach(toggleAll);
+//       toggle(d);
+//     }
+//   }
+//   // updates the graph on page load
+//   update(root, root);
+// });
 
 // adding oldScouce because it is relying on root which is global
 // oldSource is root moved to an argument
@@ -196,7 +198,9 @@ function update(source, oldSource) {
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+      .attr("transform", function(d) { 
+        // console.log("source", source);
+        return "translate(" + (source.y0 || 0) + "," + (source.x0 || 0) + ")"; })
       // set up click handler to call the same function
       .on("click", function(d) 
         { 
@@ -214,7 +218,9 @@ function update(source, oldSource) {
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return d.name; })
+      .html(function(d) { 
+        return "<a href='www.google.com'>" + d.name + "</a>"; 
+      })
       .style("fill-opacity", 1e-6);
 
   // Transition nodes to their new position.
@@ -249,7 +255,7 @@ function update(source, oldSource) {
   link.enter().insert("svg:path", "g")
       .attr("class", "link")
       .attr("d", function(d) {
-        var o = {x: source.x0, y: source.y0};
+        var o = {x: (source.x0 || 0), y: (source.y0 || 0)};
         return diagonal({source: o, target: o});
       })
     .transition()

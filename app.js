@@ -47,61 +47,93 @@ app.get('/repo-tree', function(req, res){
 	request(options, callback);
 	// function callback that handles response from github and sends data back to the client
 	function callback(error, response, body) {
+		// if request to github api is successful (200) AND there are no errors
 	    if (!error && response.statusCode == 200) {
 	    	// info is the big object with the tree array that I get back from GH
 	    	// parse takes json string and converts it into an info object
 	        var info = JSON.parse(body);
+	        // create a base node 
+
+	        var removeHTTP = function(str){
+	          // This is a RegEX that will remove http or https from str.
+	          return str.replace(/http[s]?:\/\//,'');
+	        }
+
+	        // not a url, just changing data from github to usable json
+	        // info => the json response from github 
+	        // completely generic function that will transform github data to d3 data
+          var urlarray = removeHTTP(info.url).split('/');
+          // urlarr[3] => repo name
+          var repoName = urlarray[3];
+
 	        var rootObj = {  
-	        	name: "test",
+	        	name: repoName,
 	        	children: []
 	         };
 
-	        function ifNodeExists(arr, checkName) {
+	        function getNode(arr, checkName) {
 	        	// loop through arr to see if it has a name in it that matches the param name. If it matches, use that one, if it doesn't, create a new one.
 	        	// arr => pass the children array
 	        	// name => what I'm looking for
-	        	// should return true is the name prop is already in given arr
+	        	// should return true if the name prop is already in given arr
+	        	if(arr === undefined){
+	        		return null;
+	        	}
 	        	for (var i = 0; i < arr.length; i++) {
 	        		// console.log("if node exists: ", i, arr[i]);
 	        		if(arr[i].name === checkName) {
-	        			// if it's (checkName) found, meaning the node already exists, so return true
-	        			return true;
+	        			// if it's (checkName) found, meaning the node already exists, return the current object
+	        			return arr[i];
 	        		}
 	        	};
-	        	// if no nodes are found (matching nodes), then node does not exist, so return false
-	        	return false;
+	        	// if no nodes are found (matching nodes), then return no object
+	        	return null;
 	        }
 
+	        // loops through all the objects in the response tree
 	        for(var i = 0; i < info.tree.length; i++){
-	        	// console.log(info.tree[i].path);
+	        	// marker is how we track through loops
 	        	// create keys on rootObj dynamically
 	        	var marker = rootObj;
+	        	// takes a file dir (public/css/main.css) and converts it into an array
 	        	var rawPath = info.tree[i].path.split('/');
+	        	// loop through the components of the path (["public", "css", "main.css"])
 	        	for (var j = 0; j < rawPath.length; j++) {
-	        		// console.log(rawPath[j]);
+	        		// console.log(marker);
 
-	        		var nodeExists = ifNodeExists(marker.children, rawPath[j]);
+	        		var nodeExists = getNode(marker.children, rawPath[j]);
 
-	        		console.log(marker.name);
+	        		// console.log("marker.name --->", marker.name, " rawPath[j] --->", rawPath[j]);
 	        		// console.log("rawPath[j] -->", rawPath[j], "nodeExists--_>", nodeExists);
 	        		// if the node does not exist, then create the new node and push it to children
-	        		if(!nodeExists){
+	        		if(!nodeExists){ // same as if(nodeExists === null/false)
 		        		var node = {
-		        			name: rawPath[j],
-				        	children: []
+		        			name: rawPath[j]
+				        	// children: []
 				        }
+				        console.log("node", node);
 				        // if(rootObj.name.length < 1) {
-				        // don't make another one?
+				        // if marker.children is undefined, use the empty array
+				        marker.children = marker.children || [];
 				        marker.children.push(node);
 				        // update the marker
+	        			// console.log("marker 1 ->" ,marker );
 				        marker = node;
+	        			// console.log("marker 2 ->" ,marker );
+
+	        		} else {
+	        			// use the node that came from the getNode() 
+	        			marker = nodeExists;
+	        			// marker = nodeExists(marker.children, rawPath[j]);
 	        		}
 	        	};
 	        };
-	        console.log(rootObj);
+	        console.log("rootObj --->", rootObj);
 
+	        // send the whole object back to the client! BAM!
 	        res.send(rootObj);
 	    } else {
+	    	// if it doesn't get to the send, error
 	    	console.log(options.url);
 	    	console.log("error: ", error);
 	    	console.log('status code: ', response.statusCode);

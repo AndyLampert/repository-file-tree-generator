@@ -75,6 +75,11 @@ a:link, a:visited {
   text-decoration: none;
 }
 
+text {
+  pointer-events: all;
+  cursor: pointer;
+}
+
 a:hover {
   color: #666;
 }
