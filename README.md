@@ -1,5 +1,6 @@
-Github Repository File Tree Generator
+[Github Repository File Tree Generator](http://github-file-tree-generator.herokuapp.com/)
 ==============================
+
 This web app aims to help find files and folders nested deep in Github repositories. Navigate to the repo you want to graph, copy the link, and submit the form to see a visual representation of the repo file structure. 
 
 ### Built with

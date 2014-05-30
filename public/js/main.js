@@ -6,8 +6,6 @@
 //        ]}
 // 
 var URLtoArr;
-var data; 
-var d3formattedObj;
 
 $(document).on('ready',function(){
 
@@ -148,6 +146,7 @@ var transform = function(repoTree){
 
 // D3 CODE
 var m = [20, 120, 20, 120],
+    // width
     w = 1280 - m[1] - m[3],
     // height
     h = 2000 - m[0] - m[2],
@@ -219,16 +218,19 @@ function update(source, oldSource) {
 
   // handles update method
   nodeEnter.append("svg:a")
+      // make the links open in a new page
+      .attr("target", "_blank")
       // change d.name to something that makes a url to the respective github page
 
       .attr("xlink:href", function(d) { 
-        // console.log(d.data);
-        console.log('d3formattedObj -->', d3formattedObj);
-        console.log('data -->', data);
-        console.log("URLtoArr --->",URLtoArr);
         console.log('d.name -->', d.name);
         // d.data.path "" + d.name
-        return "https://" + URLtoArr[0] + "/" + URLtoArr[1] + "/" + URLtoArr[2] + "/" + "tree/master" + "/" + d.name; 
+        var url = "https://" + URLtoArr[0] + "/" + URLtoArr[1] + "/" + URLtoArr[2] + "/" + "tree/master" + "/";
+        // if path is set (if it is NOT the root node), add it on to the end
+        if(d.data !== undefined) {
+          url += d.data.path; 
+        }
+        return url; 
         // https://github.com/AndyLampert/repository-file-tree-generator/blob/master/public/css/main.css
       })
 
