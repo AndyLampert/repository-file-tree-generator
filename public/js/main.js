@@ -1,45 +1,25 @@
-// // test  variable for findNode function
-// var d3obj = { "name": "a" },
-//        { "children": [
-//           { "name": "b1" },
-//           { "name": "b2" }
-//        ]}
-// 
+// Declaring some variables globally so I can use them in multiple scopes
 var URLtoArr;
 
 $(document).on('ready',function(){
 
-  // create a findNode function
-  // function findNode (d3obj, path) {
-  //   // this will go through a path and look for the path input's value? 
-  //     // for example:
-  //     // (d3obj, 'a/b')
-  //     // should return:
-  //     // { "name": "b "}
-      
-  //     // change path into an array
-  //     for (var i = 0; i < path.length; i++) {
-  //       var pathToArr = path.split('/');
-  //       var newObj = {};
-  //       var newArr = [];
-
-  //       newArr.push(path[i]);
-  //       console.log(newArr);
-  //     };
+  // input form jquery stuff
+  // $("#input-url").focus(function(){
+  //   $(this.val(' ')
   // }
 
-  // findNode(d3obj, 'a/b1'); 
 
   // on submit of the repo url input field... 
   $('#main-form').on('submit',function(){
     // parsing the input url (removing the http stuff)
-    var userInputURL = $('#input-url').val();
+    userInputURL = $('#input-url').val();
+    console.log('userInputURL in submit handler-->', userInputURL);
     // run the removeHTTP function (removing http junk) on the user input 
-    var updatedUserInputUrl = removeHTTP(userInputURL);
+    updatedUserInputUrl = removeHTTP(userInputURL);
     // turning user input into an array split on /
     URLtoArr = updatedUserInputUrl.split('/');
-    // ajax request, sending username and reponame
 
+    // ajax request, sending username and reponame
     $.ajax({
       url: '/repo-tree', 
       data: {
@@ -50,12 +30,21 @@ $(document).on('ready',function(){
       },
       type: 'GET',
       success: function(repoTree){
-        // console.log('response has come back!', repoTree);
-        // console.log("repoTree through the transform()", transform(repoTree) );
-        // After submit, after ajax response, run the update function (after running transform function on repoTree, the response data from gh)
-        
+        // makes the data from the server global under repoTree variable
+        window.repoTree = repoTree;
+
+        // creating new size of chart
+        // tree.setSize(parseInt(repoTree.height, repoTree.width)
+        // vis.attr("viewBox", "0 0 800 600" )
+        vis.attr("viewBox", "0 0 " + repoTree.width + " " + repoTree.height)
+        .attr("width", repoTree.width)
+        .attr("height", repoTree.height)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+        // vis.attr("width", repoTree.width);
+        console.log('repoTree.width -->', repoTree.width);
+        console.log('repoTree.height -->', repoTree.height);
         // var d3object = transform(repoTree);
-        var d3object = repoTree;
+        var d3object = repoTree.rootObj;
 
         // our github data comes back and we pass our d3object for source and oldsource
         update(d3object, d3object);
@@ -89,6 +78,9 @@ $(document).on('ready',function(){
     // stops the page from reloading
     return false;
   });
+  // Andrew's custom canvas calculation 
+
+  
 });
 
 // defining function to remove the http junk from the api response data url
@@ -161,27 +153,9 @@ var diagonal = d3.svg.diagonal()
 
 var vis = d3.select("#d3-container").append("svg:svg")
     .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2])
-  .append("svg:g")
+    .attr("height", h + m[0] + m[2]);
+vis.append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-// this is the graph that gets rendered on page load (currently using this just to test - when finished, safe to remove this function)
-// d3.json("/json/test.json", function(json) {
-//   // root => flare.json converted into JS object  
-//   root = json;
-//   // adds new propery!
-//   root.x0 = h / 2;
-//   root.y0 = 0;
-
-//   function toggleAll(d) {
-//     if (d.children) {
-//       d.children.forEach(toggleAll);
-//       toggle(d);
-//     }
-//   }
-//   // updates the graph on page load
-//   update(root, root);
-// });
 
 // adding oldScouce because it is relying on root which is global
 // oldSource is root moved to an argument

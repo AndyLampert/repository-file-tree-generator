@@ -90,6 +90,9 @@ app.get('/repo-tree', function(req, res){
 	        	return null;
 	        }
 
+	        var totalTerminalNodes = 0;
+        	var longestWidth = 0;
+        	var depthOfTree = [];
 	        // loops through all the objects in the response tree
 	        for(var i = 0; i < info.tree.length; i++){
 	        	// marker is how we track through loops
@@ -97,14 +100,26 @@ app.get('/repo-tree', function(req, res){
 	        	var marker = rootObj;
 	        	// takes a file dir (public/css/main.css) and converts it into an array
 	        	var rawPath = info.tree[i].path.split('/');
+	        	// if the length of the array (number of items in the array) is longer than the longestWidth (preset to 0), override longestWidth with the new longest array. At the end of the loop longestWidth will be the number of items in the longest array.
+        		if(rawPath.length > longestWidth) {
+        			longestWidth = rawPath.length;
+        		}
+        		// find all the terminal nodes (nodes that have no children), count them up, add that to totalTerminalNodes, to be used to calculate the height of the #d3-container.
+
+
 	        	// loop through the components of the path (["public", "css", "main.css"])
 	        	for (var j = 0; j < rawPath.length; j++) {
 	        		// console.log(marker);
 
+	        		// either getting what it was or setting it to zero and adding one each time
+	        		depthOfTree[j] = (depthOfTree[j] || 0) + 1
+
+	        		// if(rawPath[j]) {
+	        		// 	totalTerminalNodes += rawPath[j]length
+	        		// }
+
 	        		var nodeExists = getNode(marker.children, rawPath[j]);
 
-	        		// console.log("marker.name --->", marker.name, " rawPath[j] --->", rawPath[j]);
-	        		// console.log("rawPath[j] -->", rawPath[j], "nodeExists--_>", nodeExists);
 	        		// if the node does not exist, then create the new node and push it to children
 	        		if(!nodeExists){ // same as if(nodeExists === null/false)
 		        		var node = {
@@ -112,27 +127,32 @@ app.get('/repo-tree', function(req, res){
 		        			// adding another prop to send back entire object from github to the client
 		        			data: info.tree[i]
 				        }
-				        console.log("node", node);
-				        // if(rootObj.name.length < 1) {
+
 				        // if marker.children is undefined, use the empty array
 				        marker.children = marker.children || [];
 				        marker.children.push(node);
 				        // update the marker
-	        			// console.log("marker 1 ->" ,marker );
 				        marker = node;
-	        			// console.log("marker 2 ->" ,marker );
 
 	        		} else {
 	        			// use the node that came from the getNode() 
 	        			marker = nodeExists;
-	        			// marker = nodeExists(marker.children, rawPath[j]);
 	        		}
 	        	};
 	        };
-	        console.log("rootObj --->", rootObj);
-
+	        
+	        console.log("longestWidth --->", longestWidth);
+	        console.log('depthOfTree -->', depthOfTree);
+	        console.log('totalTerminalNodes -->', totalTerminalNodes);
 	        // send the whole object back to the client! BAM!
-	        res.send(rootObj);
+
+	        var finalWidth = longestWidth * 200;
+	        var finalHeight = depthOfTree[0] * 200;
+	        res.send({
+	        	rootObj: rootObj,
+	        	width: finalWidth,
+	        	height: finalHeight
+	        });
 	    } else {
 	    	// if it doesn't get to the send, error
 	    	console.log(options.url);

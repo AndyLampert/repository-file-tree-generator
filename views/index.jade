@@ -3,17 +3,33 @@ html(lang='en')
 	head
 		meta(charset="utf-8")
 		title Untitled
+		link(rel="stylesheet", type="text/css", href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css")
+		link(href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css", rel="stylesheet")
 		link(rel="stylesheet", type="text/css", href="/css/main.css")
 
 	body
+		#colorful-header
 		block content
 		h2 Input a Github Repository URL
 		form(id="main-form", method="", action="")
-			input(type="text", name="input", id="input-url",placeholder="Repo URL")
-			input(type="submit", placeholder="Display Repo File Tree")
+			input.repo-input(type="text", name="input", id="input-url",placeholder="Your Repo URL Here")
+			button.form-submit(type="submit") Submit!
+
+		.example-repos
+			
+
+		i.fa.fa-folder
+		i.fa.fa-folder-o
+		i.fa.fa-folder-open
+		i.fa.fa-folder-open-o
+		i.fa.fa-file-code-o
+		i.fa.fa-file
+		i.fa.fa-file-o
+		i.fa.fa-file-text
+
 		#error-container
 		#d3-container
-			
+		
 
 	script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js")
 	script(src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js")

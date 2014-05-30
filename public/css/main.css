@@ -111,8 +111,55 @@ path.link {
 }
 
 /* Andrew's styles */
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+}
+
+input {
+  display: inline-block;
+}
+
+.repo-input,
+#main-form,
+.form-submit {
+  height: 3rem;
+}
+
+.form-submit {
+  width: 100px;
+  border-radius: 4px;
+  margin: 1rem;
+  border: 1px solid #ccc;
+  background-color: red;
+}
+
+.repo-input {
+  width: 70%;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#main-form {
+  text-align: center;
+}
+
 #error-container {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.fa:hover {
+  color: #4183c4;
+  cursor: pointer;
+}
+
+#colorful-header {
+  margin: 0;
+  width: 100%;
+  height: 5px;
+  padding: 30px 0 0 0;
+  /*clientside request, so it looks into the public folder by the static server*/
+  background: url('/github-colors.png') repeat-x;
 }
