@@ -6,6 +6,7 @@ $(document).on('ready',function(){
   // modal error checks and appends
   // on clicking the "input a git-what?" link
   $(document).on('click', '.explain-app-link', function(){
+
   });
 
   // on clicking one of the example repo links in the modal window
@@ -202,6 +203,13 @@ function update(source, oldSource) {
       .attr("r", 1e-6)
       .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
+      // .attr('font-family', 'FontAwesome')
+      // .attr('font-size', function(d) { return d.size+'em'} )
+      // .attr('font-size', function(d) { return d.size+'1em'} )
+      // .text(function(d) { return '\uf118' })
+      // .text("b");
+      // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
   // handles update method
   nodeEnter.append("svg:a")
       // make the links open in a new page
@@ -220,7 +228,8 @@ function update(source, oldSource) {
         // https://github.com/AndyLampert/repository-file-tree-generator/blob/master/public/css/main.css
       })
 
-      .append("svg:text").text(function(d) { return d.name; })
+      .append("svg:text")
+      .text(function(d) { return d.name; })
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })

@@ -13,11 +13,11 @@ html(lang='en')
 		.main-content
 			h1.main-header.text-center Input a Github Repository URL
 			a.git-style-link.explain-app-link(data-toggle='modal', data-target='.explanation-modal') Input a git-what?
-		form(id="main-form", method="", action="")
-			input.repo-input(type="text", name="input", id="input-url",placeholder="Your Repo URL Here")
-			button.form-submit(type="submit") Submit!
+			form(id="main-form", method="", action="")
+				input.repo-input(type="text", name="input", id="input-url",placeholder="Your Repo URL Here")
+				button.form-submit(type="submit") Submit!
 
-		button.btn.btn-primary(data-toggle='modal', data-target='.explanation-modal') Small modal
+		//- button.btn.btn-primary(data-toggle='modal', data-target='.explanation-modal') Small modal
 		.modal.fade.explanation-modal(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
 			.modal-dialog.modal-sm
 				.modal-content
@@ -34,6 +34,8 @@ html(lang='en')
 					ul Ok! Just click one of these links to see a graph of that repository!
 						li 
 							a.example-repo-link.git-style-link(href="https://github.com/jquery/jquery") jQuery
+						li
+							a.example-repo-link.git-style-link(href="https://github.com/twbs/bootstrap") Bootstrap
 						li 
 							a.example-repo-link.git-style-link(href='https://github.com/jashkenas/backbone') BackboneJS
 						li 
