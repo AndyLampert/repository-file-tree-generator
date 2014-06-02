@@ -1,5 +1,6 @@
 body {
   /*overflow: hidden;*/
+  background: url("/grey.png");
   margin: 0;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif !important;
@@ -111,10 +112,6 @@ path.link {
 }
 
 /* Andrew's styles */
-body {
-  font-family: Helvetica, arial, freesans, clean, sans-serif;
-}
-
 input {
   display: inline-block;
 }
@@ -132,6 +129,16 @@ input {
   margin: 1rem;
   border: 1px solid #ccc;
   /*background-color: red;*/
+}
+
+.main-header {
+  display: inline-block;
+  padding-right: 2rem;
+  font-size: 40px;
+}
+
+.main-content {
+  text-align: center;
 }
 
 .form-submit:hover {
@@ -171,7 +178,7 @@ input {
 
 .git-style-link {
   cursor: pointer;
-  color: #4183c4;
+  color: #4183c4 !important;
 }
 .git-style-link:hover {
   text-decoration: underline;
@@ -180,4 +187,10 @@ input {
 
 .explain-app-link {
   text-align: center;
+}
+
+.modal-header,
+.main-modal-header {
+  text-align: center;
+  margin-top: 10px;
 }

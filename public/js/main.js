@@ -3,6 +3,21 @@ var URLtoArr;
 
 $(document).on('ready',function(){
 
+  // modal error checks and appends
+  // on clicking the "input a git-what?" link
+  $(document).on('click', '.explain-app-link', function(){
+  });
+
+  // on clicking one of the example repo links in the modal window
+  $(document).on('click', '.example-repo-link', function(e){
+    var currentRepoLink = $(this).attr("href");
+    e.preventDefault();
+    console.log('currentRepoLink -->', currentRepoLink);
+    $('#input-url').val(currentRepoLink);
+    $('.explanation-modal').modal('hide');
+    $('.form-submit').submit();
+  });
+
   // on submit of the repo url input field... 
   $('#main-form').on('submit',function(){
     // parsing the input url (removing the http stuff)

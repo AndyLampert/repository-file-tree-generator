@@ -10,24 +10,34 @@ html(lang='en')
 	body
 		#colorful-header
 		block content
-		h1.text-center Input a Github Repository URL
-		a.git-style-link.explain-app-link(data-toggle='modal', data-target='.bs-example-modal-sm') Input a git-what?
+		.main-content
+			h1.main-header.text-center Input a Github Repository URL
+			a.git-style-link.explain-app-link(data-toggle='modal', data-target='.explanation-modal') Input a git-what?
 		form(id="main-form", method="", action="")
 			input.repo-input(type="text", name="input", id="input-url",placeholder="Your Repo URL Here")
 			button.form-submit(type="submit") Submit!
 
-		button.btn.btn-primary(data-toggle='modal', data-target='.bs-example-modal-sm') Small modal
-		.modal.fade.bs-example-modal-sm(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+		button.btn.btn-primary(data-toggle='modal', data-target='.explanation-modal') Small modal
+		.modal.fade.explanation-modal(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
 			.modal-dialog.modal-sm
 				.modal-content
-					h2 example repos!
-					ul 
+					h2.main-modal-header Need help?
+					ol
 						li 
-							a.git-style-link(href="https://github.com/jquery/jquery") jQuery
+							| Go to 
+							a.git-style-link(href='https://github.com/', target="_blank") Github
 						li 
-							a.git-style-link(href='https://github.com/jashkenas/backbone') BackboneJS
+							| Find an 
+							a.git-style-link(href="https://github.com/explore", target="_blank") awesome repository
+						li Paste the link and submit!
+					h2.modal-header Still not following?
+					ul Ok! Just click one of these links to see a graph of that repository!
 						li 
-							a.git-style-link(href='https://github.com/angular/angular.js') AngularJS
+							a.example-repo-link.git-style-link(href="https://github.com/jquery/jquery") jQuery
+						li 
+							a.example-repo-link.git-style-link(href='https://github.com/jashkenas/backbone') BackboneJS
+						li 
+							a.example-repo-link.git-style-link(href='https://github.com/AndyLampert/repository-file-tree-generator') This App's Repo!
 
 
 
