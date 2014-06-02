@@ -1,8 +1,18 @@
+// declaring colors
+$git-blue: #4183c4;
+$git-red: #bd2c00;
+$git-orange: #f93;
+$git-green: #6cc644;
+$git-light-grey: #999;
+$git-dark-grey: #666;
+$git-black: #333;
+$hel-stack: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif;
+
 body {
   /*overflow: hidden;*/
   margin: 0;
   font-size: 14px;
-  font-family: "Helvetica Neue", Helvetica, arial, freesans, clean, sans-serif !important;
+  font-family: $hel-stack !important;
 }
 
 #chart, #header, #footer {
@@ -166,16 +176,16 @@ input {
   height: 3px;
   padding: 3px 0 0 0;
   /*clientside request, so it looks into the public folder by the static server*/
-  background: url("/github-colors.png") repeat-x;
+  background: url('/github-colors.png') repeat-x;
 }
 
 .git-style-link {
   cursor: pointer;
-  color: #4183c4;
-}
-.git-style-link:hover {
-  text-decoration: underline;
-  color: #4183c4;
+  color: $git-blue;
+  &:hover {
+    text-decoration: underline;
+    color: $git-blue;
+  }
 }
 
 .explain-app-link {

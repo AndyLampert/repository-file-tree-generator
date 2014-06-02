@@ -10,13 +10,28 @@ html(lang='en')
 	body
 		#colorful-header
 		block content
-		h2 Input a Github Repository URL
+		h1.text-center Input a Github Repository URL
+		p 
+			a.git-style-link.explain-app-link(data-toggle='modal', data-target='.bs-example-modal-sm') Input a git-what?
 		form(id="main-form", method="", action="")
 			input.repo-input(type="text", name="input", id="input-url",placeholder="Your Repo URL Here")
 			button.form-submit(type="submit") Submit!
 
-		.example-repos
-			
+		button.btn.btn-primary(data-toggle='modal', data-target='.bs-example-modal-sm') Small modal
+		.modal.fade.bs-example-modal-sm(tabindex='-1', role='dialog', aria-labelledby='mySmallModalLabel', aria-hidden='true')
+			.modal-dialog.modal-sm
+				.modal-content
+					h2 example repos!
+					ul 
+						li 
+							a.git-style-link(href="https://github.com/jquery/jquery") jQuery
+						li 
+							a.git-style-link(href='https://github.com/jashkenas/backbone') BackboneJS
+						li 
+							a.git-style-link(href='https://github.com/angular/angular.js') AngularJS
+
+
+
 
 		i.fa.fa-folder
 		i.fa.fa-folder-o
@@ -29,9 +44,9 @@ html(lang='en')
 
 		#error-container
 		#d3-container
-		
 
 	script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+	script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
 	script(src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js")
 	script(type="text/javascript", src="js/vendor/d3.layout.js")
 	script(type="text/javascript", src="js/main.js")
