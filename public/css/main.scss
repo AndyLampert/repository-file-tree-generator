@@ -190,8 +190,9 @@ input {
 
 #error-container {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 130px;
+  display: inline-block;
+  text-align: center;
 }
 
 .fa:hover {
@@ -212,26 +213,39 @@ input {
   text-align: center;
 }
 
+.example-link {
+  padding-bottom: 1rem;
+}
+
 // modal window styles
 .modal-header,
 .main-modal-header {
-  text-align: center;
+  text-align: left;
+  padding-left: 1rem;
   margin-top: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #e5e5e5;
+}
+.modal-header-ul {
+  border-bottom: 0;
+  padding-left: 1rem;
 }
 
 #d3-container {
   position: relative;
+  display: block;
+  // margin: 0 auto;
+  // width: 100%;
+  // background-color: lightblue;
 }
 
-svg {
-  position: absolute;
+#d3-container > svg {
+  // height: 400px;
+  // width: 400px;
+  // position: absolute;
   margin: 0 auto;
+  // padding-right: 0;
   display: block;
   width: 100%;
-}
-
-#d3-container,
-svg {
-  padding-left: 100px !important;
+  // background-color: lightred;
 }

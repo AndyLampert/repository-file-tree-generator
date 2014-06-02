@@ -142,7 +142,7 @@ app.get('/repo-tree', function(req, res){
 	        console.log('totalTerminalNodes -->', totalTerminalNodes);
 	        // send the whole object back to the client! BAM!
 
-	        var finalWidth = longestWidth * 260;
+	        var finalWidth = longestWidth * 200;
 
 	        var finalHeight = breathOfTree[0] * 15;
 	        

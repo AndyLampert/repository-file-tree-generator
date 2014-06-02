@@ -69,6 +69,7 @@ $(document).on('ready',function(){
         // alert('error on the client side');
         // gives all arguments passed to a function
         console.log(arguments);
+        $('.explain-app-link').click();
         $('#error-container').append(response.responseText);
       }
     });
@@ -236,9 +237,9 @@ function update(source, oldSource) {
       .append("svg:text")
       .text(function(d) { return d.name; })
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-      .attr("dy", ".35em")
+      .attr("dy", "-0.15em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-      .style("fill-opacity", 1e-6);
+      // .style("fill-opacity", 1e-6);
 
   // code that works! (backup)
   // nodeEnter.append("svg:text")
@@ -248,7 +249,7 @@ function update(source, oldSource) {
   //     .html(function(d) { 
   //       return "<a href='www.google.com'>" + d.name + "</a>"; 
   //     })
-  //     .style("fill-opacity", 1e-6);
+      // .style("fill-opacity", 1e-6);
 
 
   // Transition nodes to their new position.
