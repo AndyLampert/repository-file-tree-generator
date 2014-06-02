@@ -9,10 +9,6 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
 
-var getGitURL = function(){
-	//
-}
-
 // api route handler
 app.get('/repo-tree', function(req, res){
 
@@ -92,7 +88,7 @@ app.get('/repo-tree', function(req, res){
 
 	        var totalTerminalNodes = 0;
         	var longestWidth = 0;
-        	var depthOfTree = [];
+        	var breathOfTree = [];
 	        // loops through all the objects in the response tree
 	        for(var i = 0; i < info.tree.length; i++){
 	        	// marker is how we track through loops
@@ -104,7 +100,7 @@ app.get('/repo-tree', function(req, res){
         		if(rawPath.length > longestWidth) {
         			longestWidth = rawPath.length;
         		}
-        		// find all the terminal nodes (nodes that have no children), count them up, add that to totalTerminalNodes, to be used to calculate the height of the #d3-container.
+        		// find all the terminal nodes (nodes that have no children - also commonly called leafnodes), count them up, add that to totalTerminalNodes, to be used to calculate the height of the #d3-container.
 
 
 	        	// loop through the components of the path (["public", "css", "main.css"])
@@ -112,7 +108,7 @@ app.get('/repo-tree', function(req, res){
 	        		// console.log(marker);
 
 	        		// either getting what it was or setting it to zero and adding one each time
-	        		depthOfTree[j] = (depthOfTree[j] || 0) + 1
+	        		breathOfTree[j] = (breathOfTree[j] || 0) + 1
 
 	        		// if(rawPath[j]) {
 	        		// 	totalTerminalNodes += rawPath[j]length
@@ -142,12 +138,17 @@ app.get('/repo-tree', function(req, res){
 	        };
 	        
 	        console.log("longestWidth --->", longestWidth);
-	        console.log('depthOfTree -->', depthOfTree);
+	        console.log('breathOfTree -->', breathOfTree);
 	        console.log('totalTerminalNodes -->', totalTerminalNodes);
 	        // send the whole object back to the client! BAM!
 
-	        var finalWidth = longestWidth * 200;
-	        var finalHeight = depthOfTree[0] * 200;
+	        var finalWidth = longestWidth * 210;
+
+	        var finalHeight = breathOfTree[0] * 15;
+	        
+	        rootObj.x0 = finalHeight / 2;
+	        rootObj.y0 = 20;
+
 	        res.send({
 	        	rootObj: rootObj,
 	        	width: finalWidth,

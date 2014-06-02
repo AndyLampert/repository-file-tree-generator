@@ -3,12 +3,6 @@ var URLtoArr;
 
 $(document).on('ready',function(){
 
-  // input form jquery stuff
-  // $("#input-url").focus(function(){
-  //   $(this.val(' ')
-  // }
-
-
   // on submit of the repo url input field... 
   $('#main-form').on('submit',function(){
     // parsing the input url (removing the http stuff)
@@ -35,18 +29,19 @@ $(document).on('ready',function(){
 
         // creating new size of chart
         // tree.setSize(parseInt(repoTree.height, repoTree.width)
-        // vis.attr("viewBox", "0 0 800 600" )
+        vis.attr("viewBox", "0 0 800 600" )
         vis.attr("viewBox", "0 0 " + repoTree.width + " " + repoTree.height)
         .attr("width", repoTree.width)
         .attr("height", repoTree.height)
         .attr("preserveAspectRatio", "xMidYMid meet");
-        // vis.attr("width", repoTree.width);
+        vis.attr("width", repoTree.width);
         console.log('repoTree.width -->', repoTree.width);
         console.log('repoTree.height -->', repoTree.height);
         // var d3object = transform(repoTree);
         var d3object = repoTree.rootObj;
 
         // our github data comes back and we pass our d3object for source and oldsource
+        tree.size([repoTree.height, repoTree.width]);
         update(d3object, d3object);
       },
       error: function(response){
@@ -92,6 +87,8 @@ var removeHTTP = function(str){
 // not a url, just changing data from github to usable json
 // repoTree => the json response from github 
 // completely generic function that will transform github data to d3 data
+
+/*
 var transform = function(repoTree){ 
   var urlarray = removeHTTP(repoTree.url).split('/');
   // urlarr[3] => repo name
@@ -126,7 +123,6 @@ var transform = function(repoTree){
       // when we see another 
 
       // repoTree - the full obj from the server that it got from GH
-      // 
 
     };
 
@@ -135,6 +131,7 @@ var transform = function(repoTree){
   d3formattedObj.y0 = 0;
   return d3formattedObj;
 }
+*/
 
 // D3 CODE
 var m = [20, 120, 20, 120],
@@ -146,14 +143,14 @@ var m = [20, 120, 20, 120],
     root;
 
 var tree = d3.layout.tree()
-    .size([h, w]);
+    // .size([h, w]);
 
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
 var vis = d3.select("#d3-container").append("svg:svg")
-    .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2]);
+    // .attr("width", w + m[1] + m[3])
+    // .attr("height", h + m[0] + m[2]);
 vis.append("svg:g")
     .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
