@@ -159,6 +159,7 @@ input {
   padding: 3px 0 0 0;
   position: fixed;
   top: 0;
+  z-index: 5;
   background: url('/github-colors.png') repeat-x;
 }
 
@@ -172,6 +173,7 @@ input {
   width: 100%;
   top: 3px;
   border-bottom: 1px solid black;
+  z-index: 5;
 }
 
 .repo-input {
@@ -197,7 +199,6 @@ input {
   cursor: pointer;
 }
 
-
 .git-style-link {
   cursor: pointer;
   color: $git-blue !important;
@@ -216,4 +217,21 @@ input {
 .main-modal-header {
   text-align: center;
   margin-top: 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+#d3-container {
+  position: relative;
+}
+
+svg {
+  position: absolute;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+}
+
+#d3-container,
+svg {
+  padding-left: 100px !important;
 }

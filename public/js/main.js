@@ -3,6 +3,11 @@ var URLtoArr;
 
 $(document).on('ready',function(){
 
+  // on form submit... 
+  $('#main-form').on('submit', function(){
+    console.log('asdf');
+  })
+
   // modal error checks and appends
   // on clicking the "input a git-what?" link
   $(document).on('click', '.explain-app-link', function(){
@@ -202,11 +207,11 @@ function update(source, oldSource) {
   nodeEnter.append("svg:circle")
       .attr("r", 1e-6)
       .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-      // .attr('font-family', 'FontAwesome')
-      // .attr('font-size', function(d) { return d.size+'em'} )
-      // .attr('font-size', function(d) { return d.size+'1em'} )
-      // .text(function(d) { return '\uf118' })
+  // nodeEnter.append("svg:text")
+  //     .attr('font-family', 'FontAwesome')
+  //     .attr('font-size', function(d) { return d.size+'em'} )
+  //     .attr('font-size', function(d) { return d.size+'1em'} )
+  //     .text(function(d) { return '\uf118' })
       // .text("b");
       // .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
