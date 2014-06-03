@@ -237,7 +237,7 @@ function update(source, oldSource) {
       .append("svg:text")
       .text(function(d) { return d.name; })
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-      .attr("dy", "-0.15em")
+      .attr("dy", "0.25em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
       // .style("fill-opacity", 1e-6);
 
