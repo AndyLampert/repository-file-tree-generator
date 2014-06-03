@@ -70,7 +70,7 @@ $(document).on('ready',function(){
         // gives all arguments passed to a function
         console.log(arguments);
         $('.explain-app-link').click();
-        $('#error-container').append(response.responseText);
+        // $('#error-container').append(response.responseText);
       }
     });
     

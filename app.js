@@ -18,12 +18,12 @@ app.get('/repo-tree', function(req, res){
 	// ! because argument is not a boolean, JS converts it to a boolean, so that any falsey values will be a false boolean
 	if(!req.query.userName) {
 		console.log('username is undefined or empty!');
-		res.send(500, "Something wrong with the url (username?)")
+		res.send(500)
 		return;
 	}
 	if(!req.query.repoName) {
 		console.log('repo name is undefined or empty!')
-		res.send(500, "Something wrong with the url (repo name?)")
+		res.send(500)
 		return;
 	}
 
@@ -144,7 +144,7 @@ app.get('/repo-tree', function(req, res){
 
 	        var finalWidth = longestWidth * 200;
 
-	        var finalHeight = breathOfTree[0] * 15;
+	        var finalHeight = breathOfTree[0] * 17;
 	        
 	        rootObj.x0 = finalHeight / 2;
 	        rootObj.y0 = 20;
