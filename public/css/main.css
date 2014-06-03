@@ -230,3 +230,10 @@ input {
   display: block;
   width: 100%;
 }
+
+text {
+  color: #4183c4;
+}
+text:hover {
+  text-decoration: underline;
+}

@@ -249,3 +249,11 @@ input {
   width: 100%;
   // background-color: lightred;
 }
+
+text {
+color: $git-blue;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

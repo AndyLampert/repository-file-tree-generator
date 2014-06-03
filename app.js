@@ -9,6 +9,9 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
 
+var widthFactor = 200;
+var lengthFactor = 17;
+
 // api route handler
 app.get('/repo-tree', function(req, res){
 
@@ -142,9 +145,9 @@ app.get('/repo-tree', function(req, res){
 	        console.log('totalTerminalNodes -->', totalTerminalNodes);
 	        // send the whole object back to the client! BAM!
 
-	        var finalWidth = longestWidth * 200;
+	        var finalWidth = longestWidth * widthFactor;
 
-	        var finalHeight = breathOfTree[0] * 17;
+	        var finalHeight = breathOfTree[0] * lengthFactor;
 	        
 	        rootObj.x0 = finalHeight / 2;
 	        rootObj.y0 = 20;
